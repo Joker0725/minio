@@ -29,12 +29,16 @@ import {
   SHARE_OBJECT_EXPIRY_MINUTES,
 } from "../constants"
 
+import ObjectTagsPanel from "./ObjectTagsPanel"
+
+
 export class ObjectActions extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       showDeleteConfirmation: false,
       showPreview: false,
+      showTagsPanel: false,  // 新增编辑标签弹窗
     }
   }
   shareObject(e) {
@@ -118,6 +122,17 @@ export class ObjectActions extends React.Component {
           >
             <i className="fas fa-trash-alt" />
           </a>
+          <a
+            href=""
+            className="fiad-action"
+            title="Tags"
+            onClick={(e) => {
+              e.preventDefault()
+              this.setState({ showTagsPanel: true })
+            }}
+          >
+            <i className="fas fa-tags" />
+          </a>
         </Dropdown.Menu>
         {showShareObjectModal && shareObjectName === object.name && (
           <ShareObjectModal object={object} />
@@ -135,6 +150,13 @@ export class ObjectActions extends React.Component {
             getObjectURL={this.getObjectURL.bind(this)}
           />
         )}
+        {this.state.showTagsPanel && (
+          <ObjectTagsPanel
+            object={object}
+            onClose={() => this.setState({ showTagsPanel: false })}
+          />
+        )}
+
       </Dropdown>
     )
   }
